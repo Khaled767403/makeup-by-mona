@@ -1,0 +1,108 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+model Admin {
+  id        String   @id @default(cuid())
+  username  String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String?
+  imageUrl    String?
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Product {
+  id            String   @id @default(cuid())
+  title         String
+  slug          String   @unique
+  description   String?
+  price         Decimal  @db.Decimal(10, 2)
+  offerPrice    Decimal? @db.Decimal(10, 2)
+  mainImage     String
+  galleryImages String[] @default([])
+  inStock       Boolean  @default(true)
+  featured      Boolean  @default(false)
+  categoryId    String
+  category      Category @relation(fields: [categoryId], references: [id])
+  orderItems    OrderItem[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([categoryId])
+}
+
+model Banner {
+  id        String   @id @default(cuid())
+  imageUrl  String
+  headline  String
+  subtitle  String?
+  ctaLink   String?
+  isActive  Boolean  @default(true)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Singleton row (id is always "store") holding store-wide settings an admin
+// can edit from the dashboard without touching environment variables or code.
+model StoreSettings {
+  id              String   @id @default("store")
+  whatsappNumber  String   // digits only, country code first, e.g. "201234567890"
+  updatedAt       DateTime @updatedAt
+}
+
+model Order {
+  id             String      @id @default(cuid())
+  customerName   String
+  phone          String
+  governorate    String
+  address        String
+  notes          String?
+  shippingFee    Decimal     @db.Decimal(10, 2) @default(0)
+  itemsTotal     Decimal     @db.Decimal(10, 2)
+  grandTotal     Decimal     @db.Decimal(10, 2)
+  status         OrderStatus @default(PENDING)
+  items          OrderItem[]
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  @@index([createdAt])
+  @@index([status])
+}
+
+model OrderItem {
+  id          String   @id @default(cuid())
+  orderId     String
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId   String?
+  product     Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  titleSnapshot  String
+  priceSnapshot  Decimal @db.Decimal(10, 2)
+  quantity       Int
+
+  @@index([orderId])
+}

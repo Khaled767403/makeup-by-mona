@@ -1,0 +1,79 @@
+# ==========================================
+# 1. Dependencies (مجلدات الحزم والاعتماديات)
+# ==========================================
+node_modules/
+/node_modules
+client/node_modules/
+server/node_modules/
+
+# ==========================================
+# 2. Environment Variables (الملفات الحساسة للبيئة)
+# ==========================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
+
+# ==========================================
+# 3. Production & Build Outputs (ملفات البناء)
+# ==========================================
+# React / Vite build output
+dist/
+build/
+client/dist/
+client/build/
+
+# Node server build (لو بتستخدم TypeScript أو Bundler)
+server/dist/
+server/build/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ==========================================
+# 4. Database & ORM (Prisma & SQLite)
+# ==========================================
+# SQLite DB files (لو شغال local db)
+*.db
+*.db-journal
+*.sqlite
+
+# Prisma generated files (يمكن إعادة توليدها بـ prisma generate)
+# ملاحظة: اترك schema.prisma و migrations ولكن جّاهل التوليد الآلي لو مش في node_modules
+server/prisma/dev.db
+
+# ==========================================
+# 5. IDEs & Editors (محررات الكود)
+# ==========================================
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# ==========================================
+# 6. Operating System Files (ملفات النظام)
+# ==========================================
+.DS_Store
+Thumbs.db
+ehthumbs.db
+[Dd]esktop.ini
+
+# ==========================================
+# 7. Testing & Coverage (اختبارات الكود)
+# ==========================================
+coverage/
+.nyc_output/
