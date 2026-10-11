@@ -26,13 +26,13 @@ export default function Sidebar() {
 
   return (
     <>
-      <div className="flex items-center justify-between border-b border-nude/60 bg-white px-4 py-3 lg:hidden">
+      <div className="sticky top-0 z-10 flex w-full items-center justify-between border-b border-nude/60 bg-white px-4 py-3 lg:hidden">
         <span className="font-display font-semibold">Mona Admin</span>
-        <button onClick={() => setOpen((v) => !v)}><Menu size={22} /></button>
+        <button onClick={() => setOpen((v) => !v)} aria-label="Menu" className="rounded-lg p-1.5 hover:bg-blush"><Menu size={22} /></button>
       </div>
 
       <aside
-        className={`fixed inset-y-0 left-0 z-30 w-64 transform bg-white ring-1 ring-nude/40 transition-transform lg:static lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-30 w-64 transform overflow-y-auto bg-white ring-1 ring-nude/40 transition-transform lg:sticky lg:top-0 lg:h-screen lg:shrink-0 lg:translate-x-0 ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >

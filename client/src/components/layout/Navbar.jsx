@@ -14,9 +14,15 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-nude/60 bg-cream/90 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-        <Link to="/" className="font-display text-xl font-semibold tracking-wide text-ink">
-          Make up by <span className="text-rosegold">mona</span>
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-2">
+        <Link to="/" aria-label="Make up by mona - Home" className="flex shrink-0 items-center">
+          <img
+            src="/logo.png"
+            alt="Make up by mona"
+            width="640"
+            height="527"
+            className="h-14 w-auto sm:h-16 md:h-20"
+          />
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
