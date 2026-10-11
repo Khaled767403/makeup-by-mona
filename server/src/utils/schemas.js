@@ -40,9 +40,25 @@ export const bannerSchema = z.object({
 
 // Digits only, country code first (e.g. "201234567890") — this is exactly
 // the format wa.me requires, so we validate it at the boundary.
-export const storeSettingsSchema = z.object({
-  whatsappNumber: z.string().regex(/^\d{8,15}$/, "Enter digits only, with country code, e.g. 201234567890"),
-});
+const httpUrl = z
+  .string()
+  .trim()
+  .url("Enter a valid link, e.g. https://instagram.com/yourpage")
+  .refine((u) => /^https?:\/\//i.test(u), "Links must start with http:// or https://");
+
+// Each card in Admin → Settings saves on its own, so every field is optional
+// as long as at least one is sent.
+export const storeSettingsSchema = z
+  .object({
+    whatsappNumber: z
+      .string()
+      .regex(/^\d{8,15}$/, "Enter digits only, with country code, e.g. 201234567890")
+      .optional(),
+    socialLinks: z.array(httpUrl).max(10, "You can add up to 10 links").optional(),
+  })
+  .refine((d) => d.whatsappNumber !== undefined || d.socialLinks !== undefined, {
+    message: "Nothing to update",
+  });
 
 export const categoryUpdateSchema = categorySchema.partial();
 export const productUpdateSchema = productSchema.partial();
